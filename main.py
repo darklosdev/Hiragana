@@ -339,7 +339,7 @@ class HiraganaChartScreen(Screen):
                 )
                 self.scroll_layout.add_widget(header)
                 
-                char_grid = GridLayout (cols=6, spacing=5, size_hint_y=None)
+                char_grid = GridLayout(cols=6, spacing=5, size_hint_y=None)
                 char_grid.bind(minimum_height=char_grid.setter('height'))
                                 
                 # Add characters for this group
