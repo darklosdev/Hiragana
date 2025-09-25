@@ -283,7 +283,7 @@ class HiraganaChartScreen(Screen):
         super(HiraganaChartScreen, self).__init__(**kwargs)
         self.layout = BoxLayout(orientation='vertical')
         
-        title = Label(text="Hiragana Chart", font_size=30, size_hint_y=0.1)
+        title = Label(text="Hiragana Chart", font_size=14, size_hint_y=0.1)
         if JAPANESE_FONT:
             title.font_name = JAPANESE_FONT
         self.layout.add_widget(title)
@@ -292,16 +292,16 @@ class HiraganaChartScreen(Screen):
         from kivy.uix.scrollview import ScrollView
         scroll_view = ScrollView(size_hint_y=0.9)
         
-        self.scroll_layout = GridLayout(cols=5, spacing=10, size_hint_y=None)
+        self.scroll_layout = GridLayout(cols=6, spacing=5, size_hint_y=None)
         self.scroll_layout.bind(minimum_height=self.scroll_layout.setter('height'))
         
         # Helper function to create Japanese character buttons
         def create_japanese_button(char_data):
             btn = Button(
                 text=char_data["character"], 
-                font_size=24, # Slightly smaller font to fit all characters
+                font_size=15, # Slightly smaller font to fit all characters
                 size_hint_y=None, 
-                height=80
+                height=40
             )
             if JAPANESE_FONT:
                 btn.font_name = JAPANESE_FONT
@@ -327,18 +327,27 @@ class HiraganaChartScreen(Screen):
                 if "combinations" in group_name:
                     header_text = header_text.replace("Combinations", "Combinations (Yōon)")
                 
+                section_layout = BoxLayout(orientation='vertical', size_hint_y=None)
+                section_layout.bind(minimum_height=section_layout.setter('height'))
+                
                 header = Label(
                     text=header_text, 
-                    font_size=20, 
+                    font_size=15, 
                     size_hint_y=None, 
                     height=40,
                     bold=True
                 )
                 self.scroll_layout.add_widget(header)
                 
+                char_grid = GridLayout (cols=6, spacing=5, size_hint_y=None)
+                char_grid.bind(minimum_height=char_grid.setter('height'))
+                                
                 # Add characters for this group
                 for char_data in HIRAGANA_CHART[group_name]:
-                    self.scroll_layout.add_widget(create_japanese_button(char_data))
+                    char_grid.add_widget(create_japanese_button(char_data))
+                
+                section_layout.add_widget(char_grid)
+                self.scroll_layout.add_widget(section_layout)
         
         scroll_view.add_widget(self.scroll_layout)
         self.layout.add_widget(scroll_view)
